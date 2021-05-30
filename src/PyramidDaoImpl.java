@@ -37,7 +37,7 @@ public class PyramidDaoImpl implements PyramidDao {
             String text = bf.readLine();
             text = text.replaceAll(",,",",0,");
             while (text != null) {
-                System.out.println(text);
+                // System.out.println(text);
                 String[] data = text.split(",");
                 for(int i =0; i < data.length;i++)
                     if(data[i].length() < 1)
