@@ -165,5 +165,8 @@ class Pyramid {
     public String getComment() {
         return comment;
     };
+    public String toString(){
+        return modern_name +" built by "+ pharaoh + " with height of " + height;
+    }
 
 }

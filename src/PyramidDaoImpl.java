@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PyramidDaoImpl implements PyramidDao {
     private ArrayList<Pyramid> pyramids = new ArrayList<Pyramid>();
@@ -35,47 +36,71 @@ public class PyramidDaoImpl implements PyramidDao {
         }
         try {
             String text = bf.readLine();
-            text = text.replaceAll(",,",",0,");
             while (text != null) {
-                // System.out.println(text);
+                text = "-" +text.replaceAll(",,", ",0,")+"-";
                 String[] data = text.split(",");
-                for(int i =0; i < data.length;i++)
-                    if(data[i].length() < 1)
+                for (int i = 0; i < data.length; i++)
+                    if (data[i].length() < 1)
                         data[i] = "0";
+                pharaoh = data[0].substring(1);
+                ancient_name = data[1];
+                modern_name = data[2];
                 try {
-                    pharaoh = data[0];
-                    ancient_name = data[1];
-                    modern_name = data[2];
                     dynasty = Integer.parseInt(data[3]);
-                    site = data[4];
-                    base1 = Double.parseDouble(data[5]);
-                    base2 = Double.parseDouble(data[6]);
-                    height = Double.parseDouble(data[7]);
-                    slope = Double.parseDouble(data[8]);
-                    volume = Double.parseDouble(data[9]);
-                    latitude = Double.parseDouble(data[10]);
-                    longitude = Double.parseDouble(data[11]);
-                    type = data[12];
-                    lepsius = data[13];
-                    material = data[14];
-                    comment = data[15];
                 } catch (Exception e) {
-                    // System.out.println(e.toString()+",,"+text);
-                    text = bf.readLine();
-                    continue; // pybass problematic rows
-                } finally {
+                    dynasty = 0;
                 }
+                site = data[4];
+                try {
+                    base1 = Double.parseDouble(data[5]);
+                } catch (Exception e) {
+                    base1 = 0.0;
+                }
+                try {
+                    base2 = Double.parseDouble(data[6].length() > 0 ? data[6] : "0");
+                } catch (Exception e) {
+                    base2 = 0.0;
+                }
+                try {
+                    height = Double.parseDouble(data[7].length() > 0 ? data[7] : "0");
+                } catch (Exception e) {
+                    height = 0.0;
+                }
+                try {
+                    slope = Double.parseDouble(data[8].length() > 0 ? data[8] : "0");
+                } catch (Exception e) {
+                    slope = 0.0;
+                }
+                try {
+                    volume = Double.parseDouble(data[9].length() > 0 ? data[9] : "0");
+                } catch (Exception e) {
+                    volume = 0.0;
+                }
+                try {
+                    latitude = Double.parseDouble(data[10].length() > 0 ? data[10] : "0");                    
+                } catch (Exception e) {
+                    latitude = 0.0;
+                }
+                try{
+                    longitude = Double.parseDouble(data[11].length() > 0 ? data[11] : "0");
+                }catch(Exception e){
+                    longitude = 0.0;
+                }
+                type = data[12];
+                lepsius = data[13];
+                material = data[14];
+                comment = data[15].substring(0, data[15].length() - 1);
+                pyramids.add(new Pyramid(pharaoh, ancient_name, modern_name, dynasty, site, base1, base2, height, slope,
+                volume, latitude, longitude, type, lepsius, material, comment));
                 text = bf.readLine();
-                pyramids.add(new Pyramid(pharaoh, ancient_name, modern_name, dynasty, site, base1, base2, height,
-                slope, volume, latitude, longitude, type, lepsius, material, comment));
             }
         } catch (Exception e) {
-            System.out.println("problem reading from file");
+            System.out.println(e.toString());
         }
         try {
             bf.close();
         } catch (Exception e) {
-            // TODO: handle exception
+
         }
     }
 
@@ -113,5 +138,16 @@ public class PyramidDaoImpl implements PyramidDao {
         } catch (Exception e) {
             // TODO: handle exception
         }
+    }
+    public HashMap<String,Integer> getNoPyramidsPerSite(){
+        HashMap<String,Integer> m = new HashMap<>();
+        for(Pyramid p : pyramids){
+            String t = p.getSite();
+            Integer c = m.putIfAbsent(t,1);
+            if(c != null){
+                m.put(t, c + 1);
+            }
+        }
+        return m;
     }
 }
