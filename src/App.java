@@ -1,13 +1,8 @@
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.Collections;
 
 public class App {
     public static void main(String[] args) throws Exception {
-
-        // Path currentDir = Paths.get("./pyramids.csv");
-        // System.out.println(currentDir.toAbsolutePath().toString());
         PyramidDao p_handler = new PyramidDaoImpl("./pyramids.csv");
         System.out.println(p_handler.getAllPyramids().size());
         int i = 0;
