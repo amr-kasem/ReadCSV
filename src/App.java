@@ -1,5 +1,4 @@
 import java.util.Collections;
-import java.util.HashMap;
 public class App {
     public static void main(String[] args) throws Exception {
         PyramidDao p_handler = new PyramidDaoImpl();
