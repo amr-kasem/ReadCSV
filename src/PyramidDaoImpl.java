@@ -10,8 +10,10 @@ public class PyramidDaoImpl implements PyramidDao {
     private ArrayList<Pyramid> pyramids = new ArrayList<Pyramid>();
     FileReader f;
     BufferedReader bf;
+    // String file;
 
-    public PyramidDaoImpl() {
+    public PyramidDaoImpl(String fname) {
+        // file = fname;
         String pharaoh = "";
         String ancient_name = "";
         String modern_name = "";
@@ -29,7 +31,7 @@ public class PyramidDaoImpl implements PyramidDao {
         String material = "";
         String comment = "";
         try {
-            f = new FileReader("/home/auk/pyramids.csv");
+            f = new FileReader(fname);
             bf = new BufferedReader(f);
         } catch (IOException e) {
             System.out.println(e.toString());
